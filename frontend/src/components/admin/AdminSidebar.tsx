@@ -96,10 +96,10 @@ export default function AdminSidebar() {
       )}
     >
       {/* Logo */}
-      <div className="flex items-center px-3 h-14 border-b border-slate-700/60">
+      <div className="flex items-center justify-center px-2 h-20 border-b border-slate-700/60">
         {collapsed
-          ? <Image src="/logo.png" alt={SITE_NAME} width={32} height={32} className="w-8 h-8 object-contain brightness-0 invert" />
-          : <Image src="/logo.png" alt={SITE_NAME} width={160} height={40} className="h-9 w-auto object-contain brightness-0 invert" />
+          ? <Image src="/logo.png" alt={SITE_NAME} width={40} height={40} className="w-10 h-10 object-contain brightness-0 invert" />
+          : <Image src="/logo.png" alt={SITE_NAME} width={220} height={64} className="h-16 w-auto object-contain brightness-0 invert" />
         }
       </div>
 
