@@ -25,7 +25,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="col-span-2 lg:col-span-2 space-y-4">
             <Link href="/">
-              <Image src="/logo.png" alt={SITE_NAME} width={160} height={48} className="h-10 w-auto object-contain brightness-0 invert" />
+              <Image src="/logo.png" alt={SITE_NAME} width={480} height={144} className="h-32 w-auto object-contain brightness-0 invert" />
             </Link>
             <p className="text-sm leading-relaxed text-white/60 max-w-xs">
               Discover the beauty of Azerbaijan. From the ancient streets of Baku to the peaks of the Caucasus, your adventure begins here.
