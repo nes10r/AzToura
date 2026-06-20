@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
       prisma.tour.count({ where }),
       prisma.tour.findMany({ where, include, skip, take: limit, orderBy: { createdAt: 'desc' } }),
     ]);
-    return ok(data, 'Tours retrieved', 200, paginate(page, limit, total));
+    return ok(data, 'Tours retrieved', 200, paginate(page, limit, total), 60);
   } catch (e) { console.error(e); return err('Server error', 500); }
 }
 

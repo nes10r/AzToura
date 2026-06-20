@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
       prisma.event.count({ where }),
       prisma.event.findMany({ where, include: { destination: true }, skip, take: limit, orderBy: { startDate: 'asc' } }),
     ]);
-    return ok(data, 'Events retrieved', 200, paginate(page, limit, total));
+    return ok(data, 'Events retrieved', 200, paginate(page, limit, total), 60);
   } catch (e) { console.error(e); return err('Server error', 500); }
 }
 

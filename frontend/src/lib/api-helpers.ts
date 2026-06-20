@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyAccess } from './jwt';
 
-export function ok(data: unknown, message = 'Success', status = 200, pagination?: unknown) {
-  return NextResponse.json({ success: true, message, data, ...(pagination ? { pagination } : {}) }, { status });
+export function ok(data: unknown, message = 'Success', status = 200, pagination?: unknown, cacheSecs?: number) {
+  const res = NextResponse.json({ success: true, message, data, ...(pagination ? { pagination } : {}) }, { status });
+  if (cacheSecs) res.headers.set('Cache-Control', `s-maxage=${cacheSecs}, stale-while-revalidate=${cacheSecs * 2}`);
+  return res;
 }
 
 export function err(message: string, status = 400) {

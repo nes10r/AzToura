@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
       prisma.hotel.count({ where }),
       prisma.hotel.findMany({ where, include, skip, take: limit, orderBy: { createdAt: 'desc' } }),
     ]);
-    return ok(data, 'Hotels retrieved', 200, paginate(page, limit, total));
+    return ok(data, 'Hotels retrieved', 200, paginate(page, limit, total), 60);
   } catch (e) { console.error(e); return err('Server error', 500); }
 }
 

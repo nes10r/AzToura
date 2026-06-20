@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
       prisma.restaurant.count({ where }),
       prisma.restaurant.findMany({ where, include: { destination: true }, skip, take: limit, orderBy: { createdAt: 'desc' } }),
     ]);
-    return ok(data, 'Restaurants retrieved', 200, paginate(page, limit, total));
+    return ok(data, 'Restaurants retrieved', 200, paginate(page, limit, total), 60);
   } catch (e) { console.error(e); return err('Server error', 500); }
 }
 

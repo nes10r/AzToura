@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
       prisma.destination.count({ where }),
       prisma.destination.findMany({ where, include, skip, take: limit, orderBy: { createdAt: 'desc' } }),
     ]);
-    return ok(data, 'Destinations retrieved', 200, paginate(page, limit, total));
+    return ok(data, 'Destinations retrieved', 200, paginate(page, limit, total), 60);
   } catch (e) { console.error(e); return err('Server error', 500); }
 }
 
