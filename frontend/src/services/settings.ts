@@ -34,9 +34,13 @@ export const settingsService = {
   updateSite:      (data: Partial<SiteSettings>) => api.put('/settings/site', data).then(r => r.data),
   getTheme:        () => api.get<{ data: ThemeSettings }>('/settings/theme').then(r => r.data),
   updateTheme:     (data: Partial<ThemeSettings>) => api.put('/settings/theme', data).then(r => r.data),
-  getMedia:        (folder?: string) => api.get('/settings/media', { params: folder ? { folder } : {} }).then(r => r.data),
-  createMedia:     (data: Partial<MediaFile>) => api.post('/settings/media', data).then(r => r.data),
-  deleteMedia:     (id: string) => api.delete(`/settings/media/${id}`).then(r => r.data),
+  getMedia:        (folder?: string, search?: string) => api.get('/media', { params: { folder: folder || 'general', ...(search ? { search } : {}) } }).then(r => r.data),
+  createMedia:     (data: Partial<MediaFile>) => api.post('/media', data).then(r => r.data),
+  deleteMedia:     (id: string) => api.delete(`/media/${id}`).then(r => r.data),
+  uploadMedia:     (file: File, folder: string) => {
+    const fd = new FormData(); fd.append('file', file); fd.append('folder', folder);
+    return api.post('/upload', fd, { headers: { 'Content-Type': 'multipart/form-data' } }).then(r => r.data);
+  },
   getMenus:        (menuType?: string) => api.get('/settings/menus', { params: menuType ? { menuType } : {} }).then(r => r.data),
   createMenu:      (data: Partial<MenuItem>) => api.post('/settings/menus', data).then(r => r.data),
   updateMenu:      (id: string, data: Partial<MenuItem>) => api.put(`/settings/menus/${id}`, data).then(r => r.data),
