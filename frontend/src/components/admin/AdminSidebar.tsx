@@ -3,13 +3,15 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 import {
   LayoutDashboard, MapPin, Map, Building2, Utensils, CalendarDays,
-  BookOpen, Users, CalendarCheck, Star, ImageIcon, Menu, Settings,
-  Palette, Layout, Globe, Bell, Shield, FileText, ChevronDown,
-  ChevronRight, PanelLeftClose, PanelLeftOpen, LogOut, Home,
+  BookOpen, Users, CalendarCheck, Star, ImageIcon, Settings,
+  Layout, Globe, Shield, FileText, ChevronDown,
+  ChevronRight, PanelLeftClose, PanelLeftOpen, Home,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { SITE_NAME } from '@/constants';
 
 interface NavItem {
   label: string;
@@ -94,13 +96,11 @@ export default function AdminSidebar() {
       )}
     >
       {/* Logo */}
-      <div className="flex items-center gap-3 px-4 h-14 border-b border-slate-700/60">
-        <div className="w-7 h-7 bg-emerald-500 rounded-lg flex items-center justify-center shrink-0">
-          <Globe className="w-4 h-4 text-white" />
-        </div>
-        {!collapsed && (
-          <span className="font-bold text-sm tracking-tight truncate">AZ Tourism Admin</span>
-        )}
+      <div className="flex items-center px-3 h-14 border-b border-slate-700/60">
+        {collapsed
+          ? <Image src="/logo.png" alt={SITE_NAME} width={32} height={32} className="w-8 h-8 object-contain brightness-0 invert" />
+          : <Image src="/logo.png" alt={SITE_NAME} width={160} height={40} className="h-9 w-auto object-contain brightness-0 invert" />
+        }
       </div>
 
       {/* Nav */}
