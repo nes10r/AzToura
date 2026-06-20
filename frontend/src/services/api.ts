@@ -1,7 +1,13 @@
 import axios from 'axios';
 
+const BASE = (typeof process.env.NEXT_PUBLIC_API_URL === 'string' &&
+  process.env.NEXT_PUBLIC_API_URL &&
+  process.env.NEXT_PUBLIC_API_URL !== 'undefined')
+  ? process.env.NEXT_PUBLIC_API_URL
+  : '/api';
+
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || '/api',
+  baseURL: BASE,
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true,
 });
@@ -22,7 +28,7 @@ api.interceptors.response.use(
       if (refreshToken) {
         try {
           const { data } = await axios.post(
-            `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/auth/refresh-token`,
+            `${BASE}/auth/refresh-token`,
             { refreshToken },
           );
           localStorage.setItem('accessToken', data.data.accessToken);
