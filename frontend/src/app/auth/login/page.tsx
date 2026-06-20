@@ -51,7 +51,7 @@ export default function LoginPage() {
       {/* Left panel */}
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
         <Image
-          src="/baku-login.jpg"
+          src="/main.png"
           alt="Baku Maiden Tower"
           fill
           className="object-cover"
