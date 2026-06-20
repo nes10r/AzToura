@@ -4,7 +4,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Menu, X, Globe, User } from 'lucide-react';
+import Image from 'next/image';
+import { Menu, X, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { NAV_LINKS, SITE_NAME } from '@/constants';
@@ -19,9 +20,8 @@ export default function Navbar() {
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2 shrink-0">
-              <Globe className="w-6 h-6 text-white" />
-              <span className="font-bold text-white text-base tracking-tight">{SITE_NAME}</span>
+            <Link href="/" className="shrink-0">
+              <Image src="/logo.png" alt={SITE_NAME} width={140} height={40} className="h-9 w-auto object-contain brightness-0 invert" priority />
             </Link>
 
             {/* Desktop Nav */}

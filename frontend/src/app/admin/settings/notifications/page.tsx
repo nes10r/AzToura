@@ -19,7 +19,7 @@ function Toggle({ label, desc, value, onChange }: { label: string; desc: string;
 
 export default function NotificationsPage() {
   const [email, setEmail] = useState({ newBooking: true, bookingCancel: true, newUser: false, newReview: true, lowStock: false });
-  const [adminEmail, setAdminEmail] = useState('admin@aztour.az');
+  const [adminEmail, setAdminEmail] = useState('admin@aztoura.az');
   const [saved, setSaved] = useState(false);
 
   const toggle = (key: keyof typeof email) => setEmail(p => ({ ...p, [key]: !p[key] }));

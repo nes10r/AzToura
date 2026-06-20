@@ -103,7 +103,7 @@ export default function SiteSettingsPage() {
           <Globe className="w-4 h-4 text-emerald-500" /> General
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Field label="Site Name"  name="siteName"  value={settings.siteName || ''} onChange={change} placeholder="AzTour" />
+          <Field label="Site Name"  name="siteName"  value={settings.siteName || ''} onChange={change} placeholder="aztoura" />
           <Field label="Slogan"     name="siteSlogan" value={settings.siteSlogan || ''} onChange={change} placeholder="Land of Fire" />
           <Field label="Logo URL"   name="logoUrl"   value={settings.logoUrl || ''} onChange={change} placeholder="https://..." />
           <Field label="Favicon URL" name="faviconUrl" value={settings.faviconUrl || ''} onChange={change} placeholder="https://..." />
@@ -127,7 +127,7 @@ export default function SiteSettingsPage() {
       <div className="bg-white rounded-xl border border-slate-200 p-6">
         <h2 className="font-semibold text-slate-700 mb-4">SEO</h2>
         <div className="space-y-4">
-          <Field label="Meta Title"       name="metaTitle"       value={settings.metaTitle || ''}       onChange={change} placeholder="AzTour — Land of Fire" />
+          <Field label="Meta Title"       name="metaTitle"       value={settings.metaTitle || ''}       onChange={change} placeholder="aztoura — Land of Fire" />
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1.5">Meta Description</label>
             <textarea
@@ -148,7 +148,7 @@ export default function SiteSettingsPage() {
           <Mail className="w-4 h-4 text-emerald-500" /> Contact Info
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Field label="Contact Email"   name="contactEmail"   value={settings.contactEmail || ''}   onChange={change} type="email" placeholder="hello@aztour.az" />
+          <Field label="Contact Email"   name="contactEmail"   value={settings.contactEmail || ''}   onChange={change} type="email" placeholder="hello@aztoura.az" />
           <Field label="Contact Phone"   name="contactPhone"   value={settings.contactPhone || ''}   onChange={change} placeholder="+994 70 282 82 01" />
           <div className="sm:col-span-2">
             <Field label="Address" name="contactAddress" value={settings.contactAddress || ''} onChange={change} placeholder="28 May Street, Baku AZ1000" />
