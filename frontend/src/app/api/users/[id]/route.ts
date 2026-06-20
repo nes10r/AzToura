@@ -15,17 +15,18 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
   } catch (e) { console.error(e); return err('Server error', 500); }
 }
 
-export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+async function updateUser(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { response } = requireAdmin(req);
   if (response) return response;
   try {
     const { id } = await params;
     const body = await req.json();
-    const { password, ...data } = body;
+    const { password: _pw, id: _id, createdAt: _ca, updatedAt: _ua, ...data } = body;
     const user = await prisma.user.update({ where: { id }, data, select });
     return ok(user, 'User updated');
   } catch (e) { console.error(e); return err('Server error', 500); }
 }
+export { updateUser as PUT, updateUser as PATCH };
 
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { response } = requireAdmin(req);

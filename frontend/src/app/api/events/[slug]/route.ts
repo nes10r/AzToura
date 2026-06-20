@@ -16,16 +16,18 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ slu
   } catch (e) { console.error(e); return err('Server error', 500); }
 }
 
-export async function PUT(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
+async function updateEvent(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
   const { response } = requireAdmin(req);
   if (response) return response;
   try {
     const { slug } = await params;
     const body = await req.json();
-    const event = await prisma.event.update({ where: { id: slug }, data: body, include: { destination: true } });
+    const { id: _id, createdAt: _ca, updatedAt: _ua, destination: _d, ...data } = body;
+    const event = await prisma.event.update({ where: { id: slug }, data, include: { destination: true } });
     return ok(event, 'Event updated');
   } catch (e) { console.error(e); return err('Server error', 500); }
 }
+export { updateEvent as PUT, updateEvent as PATCH };
 
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
   const { response } = requireAdmin(req);

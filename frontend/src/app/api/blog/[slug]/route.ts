@@ -28,6 +28,18 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ slug
   } catch (e) { console.error(e); return err('Server error', 500); }
 }
 
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
+  const { response } = requireAdmin(req);
+  if (response) return response;
+  try {
+    const { slug } = await params;
+    const body = await req.json();
+    const { id: _id, authorId: _aid, createdAt: _ca, updatedAt: _ua, author: _au, ...data } = body;
+    const post = await prisma.blogPost.update({ where: { id: slug }, data, include: authorSelect });
+    return ok(post, 'Post updated');
+  } catch (e) { console.error(e); return err('Server error', 500); }
+}
+
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
   const { response } = requireAdmin(req);
   if (response) return response;

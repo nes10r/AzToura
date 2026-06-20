@@ -26,17 +26,18 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ slu
   } catch (e) { console.error(e); return err('Server error', 500); }
 }
 
-export async function PUT(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
+async function updateTour(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
   const { response } = requireAdmin(req);
   if (response) return response;
   try {
     const { slug } = await params;
     const body = await req.json();
-    const { additionalDestinations, ...data } = body;
+    const { id: _id, createdAt: _ca, updatedAt: _ua, destination: _d, category: _cat, images: _img, additionalDestinations: _ad, reviews: _r, _count: _c, ...data } = body;
     const tour = await prisma.tour.update({ where: { id: slug }, data, include });
     return ok(tour, 'Tour updated');
   } catch (e) { console.error(e); return err('Server error', 500); }
 }
+export { updateTour as PUT, updateTour as PATCH };
 
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
   const { response } = requireAdmin(req);
