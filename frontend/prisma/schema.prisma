@@ -78,6 +78,7 @@ model SiteSettings {
   allowRegistration Boolean @default(true)
   allowReviews      Boolean @default(true)
   allowBooking      Boolean @default(true)
+  pagesSeo          String? @db.Text
 
   updatedAt DateTime @updatedAt
 
