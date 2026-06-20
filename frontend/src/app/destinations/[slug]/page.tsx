@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Star, ArrowLeft, Building2, Utensils, Calendar, Thermometer } from 'lucide-react';
+import ReviewSection from '@/components/sections/ReviewSection';
 import { Destination } from '@/types';
 import { destinationsService } from '@/services/destinations';
 import TourCard from '@/components/cards/TourCard';
@@ -219,30 +220,10 @@ export default function DestinationDetailPage({ params }: { params: Promise<{ sl
         )}
 
         {/* Reviews */}
-        {destination.reviews && destination.reviews.length > 0 && (
-          <section>
-            <h2 className="text-2xl font-bold text-text mb-6">Traveller Reviews</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {destination.reviews.map((r) => (
-                <div key={r.id} className="bg-surface border border-border rounded-2xl p-5">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
-                      {r.user?.name?.charAt(0).toUpperCase() || 'U'}
-                    </div>
-                    <div>
-                      <p className="font-semibold text-text text-sm">{r.user?.name || 'Anonymous'}</p>
-                      <p className="text-xs text-text-muted">{formatDate(r.createdAt)}</p>
-                    </div>
-                    <div className="ml-auto">
-                      <Rating value={r.rating} size="sm" />
-                    </div>
-                  </div>
-                  <p className="text-sm text-text-secondary">{r.comment}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
+        <ReviewSection
+          destinationId={destination.id}
+          initialReviews={destination.reviews as any}
+        />
       </div>
     </div>
   );

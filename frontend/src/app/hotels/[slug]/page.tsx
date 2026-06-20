@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/Button';
 import { Rating } from '@/components/ui/Rating';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { formatPrice, formatDate } from '@/lib/utils';
+import ReviewSection from '@/components/sections/ReviewSection';
 
 export default function HotelDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
@@ -92,28 +93,7 @@ export default function HotelDetailPage({ params }: { params: Promise<{ slug: st
             )}
 
             {/* Reviews */}
-            {hotel.reviews && hotel.reviews.length > 0 && (
-              <section>
-                <h2 className="text-xl font-bold text-text mb-4">Guest Reviews</h2>
-                <div className="space-y-4">
-                  {hotel.reviews.map((r) => (
-                    <div key={r.id} className="bg-surface border border-border rounded-2xl p-5">
-                      <div className="flex items-center gap-3 mb-3">
-                        <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
-                          {r.user?.name?.charAt(0) || 'U'}
-                        </div>
-                        <div>
-                          <p className="font-semibold text-sm text-text">{r.user?.name || 'Guest'}</p>
-                          <p className="text-xs text-text-muted">{formatDate(r.createdAt)}</p>
-                        </div>
-                        <div className="ml-auto"><Rating value={r.rating} size="sm" /></div>
-                      </div>
-                      <p className="text-sm text-text-secondary">{r.comment}</p>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            )}
+            <ReviewSection hotelId={hotel.id} initialReviews={hotel.reviews as any} />
           </div>
 
           {/* Booking sidebar */}

@@ -19,6 +19,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Rating } from '@/components/ui/Rating';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { formatPrice, formatDate } from '@/lib/utils';
+import ReviewSection from '@/components/sections/ReviewSection';
 
 // ─── Activity category config (matches admin) ─────────────────────────────────
 const ACTIVITY_CATEGORIES: Record<string, { emoji: string; color: string }> = {
@@ -545,74 +546,7 @@ export default function TourDetailPage({ params }: { params: Promise<{ slug: str
             </section>
 
             {/* ── Reviews ── */}
-            <section>
-              <SectionTitle>Reviews</SectionTitle>
-              {tour.reviews && tour.reviews.length > 0 ? (
-                <>
-                  {/* Rating summary */}
-                  <Card className="p-5 mb-5">
-                    <div className="flex items-start gap-6 flex-wrap">
-                      <div className="text-center">
-                        <p className="text-5xl font-bold text-text">{avgRating.toFixed(1)}</p>
-                        <div className="flex justify-center mt-1 mb-1">
-                          {[1,2,3,4,5].map(s => (
-                            <Star key={s} className={`w-4 h-4 ${s <= Math.round(avgRating) ? 'fill-accent text-accent' : 'text-slate-200'}`} />
-                          ))}
-                        </div>
-                        <p className="text-xs text-text-muted">{tour.reviews.length} reviews</p>
-                      </div>
-                      <div className="flex-1 min-w-[160px] space-y-1.5">
-                        {ratingDist.map(({ star, count }) => (
-                          <div key={star} className="flex items-center gap-2">
-                            <span className="text-xs text-text-muted w-3">{star}</span>
-                            <Star className="w-3 h-3 fill-accent text-accent" />
-                            <div className="flex-1 bg-slate-100 rounded-full h-1.5 overflow-hidden">
-                              <div
-                                className="h-full bg-accent rounded-full transition-all"
-                                style={{ width: `${tour.reviews!.length ? (count / tour.reviews!.length) * 100 : 0}%` }}
-                              />
-                            </div>
-                            <span className="text-xs text-text-muted w-4">{count}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </Card>
-
-                  {/* Review cards */}
-                  <div className="space-y-4">
-                    {tour.reviews.map(r => (
-                      <Card key={r.id} className="p-5">
-                        <div className="flex items-center gap-3 mb-3">
-                          <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
-                            {r.user?.name?.charAt(0) || 'U'}
-                          </div>
-                          <div className="flex-1">
-                            <p className="font-semibold text-sm text-text">{r.user?.name || 'Anonymous'}</p>
-                            <p className="text-xs text-text-muted">{formatDate(r.createdAt)}</p>
-                          </div>
-                          <div className="flex">
-                            {[1,2,3,4,5].map(s => (
-                              <Star key={s} className={`w-3.5 h-3.5 ${s <= r.rating ? 'fill-accent text-accent' : 'text-slate-200'}`} />
-                            ))}
-                          </div>
-                        </div>
-                        <p className="text-sm text-text-secondary leading-relaxed">{r.comment}</p>
-                        <div className="flex items-center gap-1 mt-3 text-xs text-text-muted">
-                          <ThumbsUp className="w-3.5 h-3.5" />
-                          <span>Helpful</span>
-                        </div>
-                      </Card>
-                    ))}
-                  </div>
-                </>
-              ) : (
-                <Card className="p-10 text-center">
-                  <Star className="w-8 h-8 text-slate-200 mx-auto mb-2" />
-                  <p className="text-text-muted text-sm">No reviews yet. Be the first!</p>
-                </Card>
-              )}
-            </section>
+            <ReviewSection tourId={tour.id} initialReviews={tour.reviews as any} />
 
           </div>
 
