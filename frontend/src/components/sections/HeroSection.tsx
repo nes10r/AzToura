@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Search, MapPin, Map, Building2, Utensils, CalendarDays, Compass, ChevronDown } from 'lucide-react';
+import { Search, MapPin, Map, Building2, Utensils, CalendarDays, Compass } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
@@ -27,8 +27,6 @@ export default function HeroSection() {
     router.push(query.trim() ? `${base}?search=${encodeURIComponent(query.trim())}` : base);
   };
 
-  const ActiveIcon = TABS[activeTab].icon;
-
   return (
     <section className="relative bg-secondary overflow-hidden">
       <div
@@ -48,45 +46,40 @@ export default function HeroSection() {
         {/* ── Search card ── */}
         <div className="bg-white rounded-2xl shadow-2xl overflow-hidden border-2 border-accent">
 
-          {/* ── Tabs: desktop horizontal scroll ── */}
-          <div className="hidden sm:flex overflow-x-auto scrollbar-none border-b border-gray-100 relative">
-            {TABS.map((tab, i) => (
-              <button
-                key={tab.label}
-                onClick={() => setActiveTab(i)}
-                className={cn(
-                  'flex items-center gap-1.5 px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 transition-colors shrink-0',
-                  activeTab === i
-                    ? 'border-secondary text-secondary bg-secondary/5'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50',
-                )}
-              >
-                <tab.icon className="w-3.5 h-3.5" />
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
-          {/* ── Category selector: mobile dropdown ── */}
-          <div className="sm:hidden border-b border-gray-100">
-            <div className="relative">
-              <ActiveIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-secondary pointer-events-none" />
-              <select
-                value={activeTab}
-                onChange={(e) => setActiveTab(Number(e.target.value))}
-                className="w-full appearance-none pl-9 pr-8 py-3 text-sm font-medium text-secondary bg-secondary/5 border-0 outline-none"
-              >
-                {TABS.map((tab, i) => (
-                  <option key={tab.label} value={i}>{tab.label}</option>
-                ))}
-              </select>
-              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+          {/* ── Category pills (scrollable on mobile, tab bar on desktop) ── */}
+          <div className="relative">
+            {/* right fade hint */}
+            <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent z-10 sm:hidden" />
+            <div className="flex overflow-x-auto scrollbar-none gap-1.5 px-3 pt-3 pb-2 sm:px-0 sm:pt-0 sm:pb-0 sm:gap-0 sm:border-b sm:border-gray-100">
+              {TABS.map((tab, i) => {
+                const Icon = tab.icon;
+                const active = activeTab === i;
+                return (
+                  /* Mobile: pill chip | Desktop: underline tab */
+                  <button
+                    key={tab.label}
+                    onClick={() => setActiveTab(i)}
+                    className={cn(
+                      /* shared */
+                      'flex items-center gap-1.5 whitespace-nowrap font-medium transition-all shrink-0',
+                      /* mobile pill style */
+                      'rounded-full px-3 py-1.5 text-sm sm:rounded-none sm:px-4 sm:py-3 sm:border-b-2',
+                      active
+                        ? 'bg-secondary text-white sm:bg-secondary/5 sm:text-secondary sm:border-secondary'
+                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200 sm:bg-transparent sm:text-gray-500 sm:border-transparent sm:hover:text-gray-700 sm:hover:bg-gray-50',
+                    )}
+                  >
+                    <Icon className="w-3.5 h-3.5" />
+                    {tab.label}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
           {/* ── Search input row ── */}
           <form onSubmit={handleSearch} className="p-3 flex flex-col sm:flex-row gap-2">
-            <div className="flex-1 flex items-center gap-2 border border-gray-200 rounded-xl px-3 bg-gray-50 hover:border-secondary focus-within:border-secondary focus-within:bg-white transition-all">
+            <div className="flex-1 flex items-center gap-2 border border-gray-200 rounded-xl px-3 bg-gray-50 focus-within:border-secondary focus-within:bg-white transition-all">
               <Search className="w-4 h-4 text-gray-400 shrink-0" />
               <input
                 type="text"
@@ -96,12 +89,18 @@ export default function HeroSection() {
                 className="flex-1 py-3 text-gray-800 placeholder:text-gray-400 bg-transparent outline-none text-sm"
               />
               {query && (
-                <button type="button" onClick={() => setQuery('')} className="text-gray-400 hover:text-gray-600 text-xs px-1">✕</button>
+                <button
+                  type="button"
+                  onClick={() => setQuery('')}
+                  className="w-5 h-5 rounded-full bg-gray-300 hover:bg-gray-400 flex items-center justify-center text-white text-xs shrink-0 transition-colors"
+                >
+                  ✕
+                </button>
               )}
             </div>
             <button
               type="submit"
-              className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-accent hover:bg-amber-500 active:bg-amber-600 text-white font-semibold rounded-xl text-sm transition-colors shrink-0"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-accent hover:bg-amber-500 active:scale-95 text-white font-semibold rounded-xl text-sm transition-all shrink-0"
             >
               <Search className="w-4 h-4" />
               Search
@@ -109,14 +108,14 @@ export default function HeroSection() {
           </form>
         </div>
 
-        {/* ── Popular chips: single-row horizontal scroll ── */}
-        <div className="flex items-center gap-2 mt-3 overflow-x-auto scrollbar-none pb-1">
+        {/* ── Popular chips ── */}
+        <div className="flex items-center gap-2 mt-3 overflow-x-auto scrollbar-none">
           <span className="text-white/50 text-xs shrink-0">Popular:</span>
           {QUICK.map((place) => (
             <button
               key={place}
               onClick={() => router.push(`/destinations/${place.toLowerCase()}`)}
-              className="shrink-0 text-xs text-white/80 hover:text-white bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 rounded-full px-3 py-1 transition-colors whitespace-nowrap"
+              className="shrink-0 text-xs text-white/80 hover:text-white bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 rounded-full px-3 py-1 transition-colors whitespace-nowrap active:scale-95"
             >
               {place}
             </button>
