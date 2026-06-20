@@ -29,7 +29,12 @@ export async function GET(req: NextRequest) {
       prisma.destination.findMany({ where, include, skip, take: limit, orderBy: { createdAt: 'desc' } }),
     ]);
     return ok(data, 'Destinations retrieved', 200, paginate(page, limit, total));
-  } catch (e: unknown) { console.error(e); return err(`DB: ${e instanceof Error ? e.message : String(e)}`, 500); }
+  } catch (e: unknown) {
+    const hasUrl = !!process.env.DATABASE_URL;
+    const urlStart = process.env.DATABASE_URL?.substring(0, 20) || 'NONE';
+    console.error(e);
+    return err(`hasURL=${hasUrl} start="${urlStart}" err=${e instanceof Error ? e.message.substring(0, 150) : String(e)}`, 500);
+  }
 }
 
 export async function POST(req: NextRequest) {
