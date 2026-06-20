@@ -4,7 +4,7 @@ export const SITE_PHONE = '+994 70 282 82 01';
 export const SITE_EMAIL = 'nailmammadov@yahoo.com';
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
-export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+export const API_URL = '/api';
 
 export const NAV_LINKS = [
   { label: 'Destinations', href: '/destinations' },

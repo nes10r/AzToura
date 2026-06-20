@@ -13,7 +13,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const token = localStorage.getItem('accessToken');
     if (!token) { router.push('/auth/login'); return; }
 
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/me`, {
+    fetch(`/api/auth/me`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(r => r.json())

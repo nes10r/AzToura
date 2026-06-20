@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 
 export default function ThemeProvider() {
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/settings/theme`)
+    fetch(`/api/settings/theme`)
       .then((r) => r.json())
       .then(({ data }) => {
         if (!data) return;
