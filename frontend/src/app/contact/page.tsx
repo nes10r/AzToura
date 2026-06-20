@@ -19,7 +19,7 @@ type Form = z.infer<typeof schema>;
 
 const contactInfo = [
   { icon: MapPin, label: 'Address', value: '28 May Street, Baku AZ1000, Azerbaijan' },
-  { icon: Mail, label: 'Email', value: 'hello@aztoura.az' },
+  { icon: Mail, label: 'Email', value: 'nailmammadov@yahoo.com' },
   { icon: Phone, label: 'Phone', value: '+994 70 282 82 01' },
 ];
 

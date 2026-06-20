@@ -148,7 +148,7 @@ export default function SiteSettingsPage() {
           <Mail className="w-4 h-4 text-emerald-500" /> Contact Info
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Field label="Contact Email"   name="contactEmail"   value={settings.contactEmail || ''}   onChange={change} type="email" placeholder="hello@aztoura.az" />
+          <Field label="Contact Email"   name="contactEmail"   value={settings.contactEmail || ''}   onChange={change} type="email" placeholder="nailmammadov@yahoo.com" />
           <Field label="Contact Phone"   name="contactPhone"   value={settings.contactPhone || ''}   onChange={change} placeholder="+994 70 282 82 01" />
           <div className="sm:col-span-2">
             <Field label="Address" name="contactAddress" value={settings.contactAddress || ''} onChange={change} placeholder="28 May Street, Baku AZ1000" />
