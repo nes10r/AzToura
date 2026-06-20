@@ -13,10 +13,15 @@ import {
 import { adminService } from '@/services/admin';
 import { formatPrice, formatDate } from '@/lib/utils';
 
-interface Stats {
+interface Counts {
   users: number; destinations: number; tours: number;
   hotels: number; restaurants: number; events: number;
   bookings: number; reviews: number;
+}
+interface Stats {
+  counts: Counts;
+  recentBookings: Array<Record<string, unknown>>;
+  monthlyRevenue: Array<{ month: string; revenue: number }>;
 }
 
 const BOOKING_CHART = [
@@ -72,10 +77,10 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Promise.all([adminService.getStats(), adminService.getRecentBookings()])
-      .then(([s, b]) => {
+    adminService.getStats()
+      .then((s) => {
         setStats(s.data);
-        setBookings(b.data || []);
+        setBookings(s.data?.recentBookings || []);
       })
       .finally(() => setLoading(false));
   }, []);
@@ -90,17 +95,17 @@ export default function AdminDashboard() {
 
       {/* Stats row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={Users}        label="Total Users"        value={stats?.users ?? '—'}        color="bg-blue-50 text-blue-600"    />
-        <StatCard icon={MapPin}       label="Destinations"       value={stats?.destinations ?? '—'} color="bg-emerald-50 text-emerald-600" />
-        <StatCard icon={CalendarCheck}label="Bookings"           value={stats?.bookings ?? '—'}     color="bg-violet-50 text-violet-600" />
-        <StatCard icon={Star}         label="Reviews"            value={stats?.reviews ?? '—'}      color="bg-amber-50 text-amber-600"  />
+        <StatCard icon={Users}        label="Total Users"        value={stats?.counts?.users ?? '—'}        color="bg-blue-50 text-blue-600"    />
+        <StatCard icon={MapPin}       label="Destinations"       value={stats?.counts?.destinations ?? '—'} color="bg-emerald-50 text-emerald-600" />
+        <StatCard icon={CalendarCheck}label="Bookings"           value={stats?.counts?.bookings ?? '—'}     color="bg-violet-50 text-violet-600" />
+        <StatCard icon={Star}         label="Reviews"            value={stats?.counts?.reviews ?? '—'}      color="bg-amber-50 text-amber-600"  />
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={Building2}    label="Hotels"             value={stats?.hotels ?? '—'}       color="bg-sky-50 text-sky-600"      />
-        <StatCard icon={Utensils}     label="Restaurants"        value={stats?.restaurants ?? '—'}  color="bg-orange-50 text-orange-600"/>
-        <StatCard icon={CalendarDays} label="Events"             value={stats?.events ?? '—'}       color="bg-rose-50 text-rose-600"    />
-        <StatCard icon={MapPin}       label="Active Tours"       value={stats?.tours ?? '—'}        color="bg-teal-50 text-teal-600"    />
+        <StatCard icon={Building2}    label="Hotels"             value={stats?.counts?.hotels ?? '—'}       color="bg-sky-50 text-sky-600"      />
+        <StatCard icon={Utensils}     label="Restaurants"        value={stats?.counts?.restaurants ?? '—'}  color="bg-orange-50 text-orange-600"/>
+        <StatCard icon={CalendarDays} label="Events"             value={stats?.counts?.events ?? '—'}       color="bg-rose-50 text-rose-600"    />
+        <StatCard icon={MapPin}       label="Active Tours"       value={stats?.counts?.tours ?? '—'}        color="bg-teal-50 text-teal-600"    />
       </div>
 
       {/* Charts row */}
@@ -154,7 +159,7 @@ export default function AdminDashboard() {
           Revenue (6 months)
         </h2>
         <ResponsiveContainer width="100%" height={180}>
-          <LineChart data={REVENUE_CHART}>
+          <LineChart data={stats?.monthlyRevenue ?? REVENUE_CHART}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
             <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#94a3b8' }} />
             <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#94a3b8' }} tickFormatter={v => `$${v}`} />
