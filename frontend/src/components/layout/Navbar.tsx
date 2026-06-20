@@ -21,7 +21,7 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-14">
             {/* Logo */}
             <Link href="/" className="shrink-0">
-              <Image src="/logo.png" alt={SITE_NAME} width={140} height={40} className="h-9 w-auto object-contain brightness-0 invert" priority />
+              <Image src="/logo.png" alt={SITE_NAME} width={200} height={56} className="h-11 w-auto object-contain brightness-0 invert" priority />
             </Link>
 
             {/* Desktop Nav */}
