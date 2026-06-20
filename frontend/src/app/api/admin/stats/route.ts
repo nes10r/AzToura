@@ -18,8 +18,12 @@ export async function GET(req: NextRequest) {
     ]);
 
     const recentBookings = await prisma.booking.findMany({
-      take: 5, orderBy: { createdAt: 'desc' },
-      include: { tour: { select: { name: true } }, user: { select: { name: true, email: true } } },
+      take: 8, orderBy: { createdAt: 'desc' },
+      include: {
+        user:  { select: { name: true, email: true } },
+        tour:  { select: { name: true } },
+        hotel: { select: { name: true } },
+      },
     });
 
     const now = new Date();
