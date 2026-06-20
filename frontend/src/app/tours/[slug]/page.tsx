@@ -680,11 +680,11 @@ export default function TourDetailPage({ params }: { params: Promise<{ slug: str
 
                 {/* Contact options */}
                 <div className="grid grid-cols-2 gap-2">
-                  <a href="https://wa.me/994501234567" target="_blank" rel="noopener noreferrer"
+                  <a href="https://wa.me/994702828201" target="_blank" rel="noopener noreferrer"
                     className="flex items-center justify-center gap-2 py-2.5 border border-border rounded-xl text-xs font-medium text-text hover:border-emerald-400 hover:text-emerald-600 hover:bg-emerald-50 transition-colors">
                     <MessageCircle className="w-4 h-4" /> WhatsApp
                   </a>
-                  <a href="tel:+994501234567"
+                  <a href="tel:+994702828201"
                     className="flex items-center justify-center gap-2 py-2.5 border border-border rounded-xl text-xs font-medium text-text hover:border-primary hover:text-primary hover:bg-primary/5 transition-colors">
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 7V5z" /></svg>
                     Call Us
