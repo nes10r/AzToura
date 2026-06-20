@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { settingsService, SiteSettings } from '@/services/settings';
-import { Check, Globe, Mail, Phone, MapPin, Facebook, Instagram, Twitter, Youtube } from 'lucide-react';
+import { Check, Globe, Mail, Phone, MapPin } from 'lucide-react';
 
 function Field({ label, name, value, onChange, type = 'text', placeholder }: {
   label: string; name: string; value: string; onChange: (n: string, v: string) => void;
