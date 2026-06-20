@@ -6,7 +6,8 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Eye, EyeOff, Globe } from 'lucide-react';
+import Image from 'next/image';
+import { Eye, EyeOff } from 'lucide-react';
 import { authService } from '@/services/auth';
 import { Button } from '@/components/ui/Button';
 import { SITE_NAME } from '@/constants';
@@ -51,11 +52,8 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen flex items-center justify-center p-6 sm:p-12 bg-background pt-24">
       <div className="w-full max-w-md">
-        <Link href="/" className="flex items-center gap-2 mb-10">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-            <Globe className="w-5 h-5 text-white" />
-          </div>
-          <span className="font-bold text-lg">{SITE_NAME}</span>
+        <Link href="/" className="inline-block mb-10">
+          <Image src="/logo.png" alt={SITE_NAME} width={180} height={50} className="h-12 w-auto object-contain" />
         </Link>
 
         <h1 className="text-3xl font-bold text-text mb-2">Create account</h1>

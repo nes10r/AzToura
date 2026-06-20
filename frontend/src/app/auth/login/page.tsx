@@ -6,7 +6,8 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Eye, EyeOff, Globe, Loader2 } from 'lucide-react';
+import Image from 'next/image';
+import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import { authService } from '@/services/auth';
 import { Button } from '@/components/ui/Button';
 import { SITE_NAME } from '@/constants';
@@ -48,17 +49,18 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex">
       {/* Left panel */}
-      <div
-        className="hidden lg:flex lg:w-1/2 bg-cover bg-center relative"
-        style={{ backgroundImage: "url('https://images.unsplash.com/photo-1596484552834-6a58f850e0a1?w=1200')" }}
-      >
-        <div className="absolute inset-0 bg-secondary/80" />
-        <div className="relative z-10 flex flex-col justify-between p-12 text-white">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-9 h-9 bg-primary rounded-lg flex items-center justify-center">
-              <Globe className="w-5 h-5" />
-            </div>
-            <span className="font-bold text-xl">{SITE_NAME}</span>
+      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
+        <Image
+          src="/baku-login.jpg"
+          alt="Baku Maiden Tower"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-secondary/70" />
+        <div className="relative z-10 flex flex-col justify-between p-12 text-white w-full">
+          <Link href="/">
+            <Image src="/logo.png" alt={SITE_NAME} width={220} height={60} className="h-14 w-auto object-contain brightness-0 invert" />
           </Link>
           <div>
             <h2 className="text-4xl font-bold leading-tight mb-4">
@@ -68,18 +70,17 @@ export default function LoginPage() {
               Sign in to book tours, save favorites, and manage your travel plans.
             </p>
           </div>
-          <p className="text-white/40 text-sm">© 2025 {SITE_NAME}</p>
+          <p className="text-white/40 text-sm">© 2026 {SITE_NAME}</p>
         </div>
       </div>
 
       {/* Right panel */}
       <div className="flex-1 flex items-center justify-center p-6 sm:p-12 bg-background">
         <div className="w-full max-w-md">
-          <div className="lg:hidden flex items-center gap-2 mb-10">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <Globe className="w-5 h-5 text-white" />
-            </div>
-            <span className="font-bold text-lg">{SITE_NAME}</span>
+          <div className="lg:hidden mb-10">
+            <Link href="/">
+              <Image src="/logo.png" alt={SITE_NAME} width={180} height={50} className="h-12 w-auto object-contain" />
+            </Link>
           </div>
 
           <h1 className="text-3xl font-bold text-text mb-2">Welcome back</h1>
