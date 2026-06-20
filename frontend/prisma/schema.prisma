@@ -1,0 +1,530 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ─── Enums ───────────────────────────────────────────────────────────────────
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum PriceRange {
+  BUDGET
+  MODERATE
+  EXPENSIVE
+  LUXURY
+}
+
+// ─── User ────────────────────────────────────────────────────────────────────
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  avatar    String?
+  phone     String?
+  role      Role     @default(USER)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  bookings      Booking[]
+  reviews       Review[]
+  favorites     Favorite[]
+  blogPosts     BlogPost[]
+  auditLogs     AuditLog[]
+  uploadedFiles MediaFile[]
+
+  @@index([email])
+  @@map("users")
+}
+
+// ─── SiteSettings ────────────────────────────────────────────────────────────
+
+model SiteSettings {
+  id                String  @id @default("singleton")
+  siteName          String  @default("Azerbaijan Tourism")
+  siteSlogan        String?
+  metaTitle         String?
+  metaDescription   String?
+  seoKeywords       String?
+  defaultLanguage   String  @default("en")
+  defaultCurrency   String  @default("USD")
+  contactEmail      String?
+  contactPhone      String?
+  contactAddress    String?
+  socialFacebook    String?
+  socialInstagram   String?
+  socialTwitter     String?
+  socialYoutube     String?
+  logoUrl           String?
+  faviconUrl        String?
+  maintenanceMode   Boolean @default(false)
+  allowRegistration Boolean @default(true)
+  allowReviews      Boolean @default(true)
+  allowBooking      Boolean @default(true)
+
+  updatedAt DateTime @updatedAt
+
+  @@map("site_settings")
+}
+
+// ─── ThemeSettings ───────────────────────────────────────────────────────────
+
+model ThemeSettings {
+  id             String  @id @default("singleton")
+  primaryColor   String  @default("#0A8F6A")
+  secondaryColor String  @default("#0F4C81")
+  accentColor    String  @default("#F6B73C")
+  bgColor        String  @default("#F8FAFC")
+  textColor      String  @default("#1E293B")
+  cardColor      String  @default("#FFFFFF")
+  borderColor    String  @default("#E2E8F0")
+  headerColor    String  @default("#0F4C81")
+  footerColor    String  @default("#1E293B")
+  fontFamily     String  @default("Geist")
+  headingFont    String  @default("Geist")
+  fontSize       String  @default("16")
+  lineHeight     String  @default("1.6")
+  borderRadius   String  @default("8")
+  buttonStyle    String  @default("rounded")
+  cardStyle      String  @default("shadow")
+  customCss      String?
+
+  updatedAt DateTime @updatedAt
+
+  @@map("theme_settings")
+}
+
+// ─── AuditLog ────────────────────────────────────────────────────────────────
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action     String
+  resource   String
+  resourceId String?
+  details    String?
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+
+  @@index([userId])
+  @@index([createdAt])
+  @@index([resource])
+  @@map("audit_logs")
+}
+
+// ─── MediaFile ───────────────────────────────────────────────────────────────
+
+model MediaFile {
+  id         String   @id @default(uuid())
+  url        String
+  publicId   String?
+  name       String
+  altText    String?
+  caption    String?
+  size       Int?
+  mimeType   String?
+  folder     String   @default("general")
+  uploadedBy String?
+  user       User?    @relation(fields: [uploadedBy], references: [id], onDelete: SetNull)
+  createdAt  DateTime @default(now())
+
+  @@index([uploadedBy])
+  @@index([folder])
+  @@map("media_files")
+}
+
+// ─── MenuItem ────────────────────────────────────────────────────────────────
+
+model MenuItem {
+  id        String     @id @default(uuid())
+  label     String
+  href      String?
+  linkType  String     @default("internal")
+  target    String     @default("_self")
+  icon      String?
+  menuType  String     @default("navbar")
+  parentId  String?
+  parent    MenuItem?  @relation("MenuTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children  MenuItem[] @relation("MenuTree")
+  sortOrder Int        @default(0)
+  active    Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@index([menuType])
+  @@index([parentId])
+  @@map("menu_items")
+}
+
+// ─── Category ────────────────────────────────────────────────────────────────
+
+model Category {
+  id          String  @id @default(uuid())
+  name        String  @unique
+  slug        String  @unique
+  description String?
+  icon        String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  destinations Destination[]
+  tours        Tour[]
+  events       Event[]
+
+  @@index([slug])
+  @@map("categories")
+}
+
+// ─── Destination ─────────────────────────────────────────────────────────────
+
+model Destination {
+  id          String  @id @default(uuid())
+  name        String
+  slug        String  @unique
+  description String
+  region      String
+  city        String?
+  latitude    Float?
+  longitude   Float?
+  coverImage   String?
+  imageSpring  String?
+  imageSummer  String?
+  imageAutumn  String?
+  imageWinter  String?
+  featured     Boolean @default(false)
+  active       Boolean @default(true)
+  categoryId   String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  category    Category?    @relation(fields: [categoryId], references: [id])
+  tours       Tour[]
+  tourStops   TourDestination[]
+  hotels      Hotel[]
+  restaurants Restaurant[]
+  events      Event[]
+  reviews     Review[]
+  favorites   Favorite[]
+  images      Image[]
+
+  @@index([slug])
+  @@index([region])
+  @@index([categoryId])
+  @@map("destinations")
+}
+
+// ─── Tour ────────────────────────────────────────────────────────────────────
+
+model Tour {
+  id            String  @id @default(uuid())
+  name          String
+  slug          String  @unique
+  description   String
+  price         Float
+  duration      Int
+  maxGroupSize  Int
+  coverImage    String?
+  featured      Boolean @default(false)
+  destinationId String
+  categoryId    String?
+
+  highlights    Json?
+  itinerary     Json?
+  inclusions    Json?
+  faq           Json?
+  packingList   Json?
+  meetingPoint  String?
+  languages     String?   @default("AZ / EN / RU")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  destination            Destination          @relation(fields: [destinationId], references: [id], onDelete: Cascade)
+  category               Category?            @relation(fields: [categoryId], references: [id])
+  additionalDestinations TourDestination[]
+  bookings               Booking[]
+  reviews                Review[]
+  favorites              Favorite[]
+  images                 Image[]
+
+  @@index([slug])
+  @@index([destinationId])
+  @@index([categoryId])
+  @@map("tours")
+}
+
+model TourDestination {
+  tourId        String
+  destinationId String
+  order         Int    @default(0)
+
+  tour        Tour        @relation(fields: [tourId], references: [id], onDelete: Cascade)
+  destination Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
+
+  @@id([tourId, destinationId])
+  @@map("tour_destinations")
+}
+
+// ─── Hotel ───────────────────────────────────────────────────────────────────
+
+model Hotel {
+  id            String   @id @default(uuid())
+  name          String
+  slug          String   @unique
+  description   String
+  city          String
+  address       String
+  stars         Int
+  pricePerNight Float
+  coverImage    String?
+  featured      Boolean  @default(false)
+  active        Boolean  @default(true)
+  amenities     String[]
+  destinationId String
+  latitude      Float?
+  longitude     Float?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  destination Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
+  bookings    Booking[]
+  reviews     Review[]
+  favorites   Favorite[]
+  images      Image[]
+
+  @@index([slug])
+  @@index([destinationId])
+  @@index([city])
+  @@map("hotels")
+}
+
+// ─── Restaurant ──────────────────────────────────────────────────────────────
+
+model Restaurant {
+  id            String     @id @default(uuid())
+  name          String
+  slug          String     @unique
+  description   String
+  city          String
+  address       String
+  cuisine       String
+  priceRange    PriceRange @default(MODERATE)
+  coverImage    String?
+  featured      Boolean    @default(false)
+  active        Boolean    @default(true)
+  destinationId String
+  latitude      Float?
+  longitude     Float?
+  phone         String?
+  website       String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  destination Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
+  bookings    Booking[]
+  reviews     Review[]
+  favorites   Favorite[]
+  images      Image[]
+
+  @@index([slug])
+  @@index([destinationId])
+  @@index([city])
+  @@map("restaurants")
+}
+
+// ─── Event ───────────────────────────────────────────────────────────────────
+
+model Event {
+  id            String  @id @default(uuid())
+  name          String
+  slug          String  @unique
+  description   String
+  city          String
+  address       String
+  startDate     DateTime
+  endDate       DateTime
+  price         Float    @default(0)
+  coverImage    String?
+  featured      Boolean  @default(false)
+  destinationId String
+  categoryId    String?
+  latitude      Float?
+  longitude     Float?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  destination Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
+  category    Category?   @relation(fields: [categoryId], references: [id])
+  bookings    Booking[]
+  reviews     Review[]
+  favorites   Favorite[]
+  images      Image[]
+
+  @@index([slug])
+  @@index([destinationId])
+  @@index([startDate])
+  @@map("events")
+}
+
+// ─── Booking ─────────────────────────────────────────────────────────────────
+
+model Booking {
+  id           String        @id @default(uuid())
+  userId       String
+  tourId       String?
+  hotelId      String?
+  restaurantId String?
+  eventId      String?
+  status       BookingStatus @default(PENDING)
+  startDate    DateTime
+  endDate      DateTime?
+  guests       Int           @default(1)
+  totalPrice   Float
+  notes        String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tour       Tour?       @relation(fields: [tourId], references: [id])
+  hotel      Hotel?      @relation(fields: [hotelId], references: [id])
+  restaurant Restaurant? @relation(fields: [restaurantId], references: [id])
+  event      Event?      @relation(fields: [eventId], references: [id])
+
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("bookings")
+}
+
+// ─── Review ──────────────────────────────────────────────────────────────────
+
+model Review {
+  id            String  @id @default(uuid())
+  userId        String
+  destinationId String?
+  tourId        String?
+  hotelId       String?
+  restaurantId  String?
+  eventId       String?
+  rating        Int
+  comment       String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  destination Destination? @relation(fields: [destinationId], references: [id])
+  tour        Tour?        @relation(fields: [tourId], references: [id])
+  hotel       Hotel?       @relation(fields: [hotelId], references: [id])
+  restaurant  Restaurant?  @relation(fields: [restaurantId], references: [id])
+  event       Event?       @relation(fields: [eventId], references: [id])
+
+  @@index([userId])
+  @@index([destinationId])
+  @@index([tourId])
+  @@index([hotelId])
+  @@map("reviews")
+}
+
+// ─── Favorite ────────────────────────────────────────────────────────────────
+
+model Favorite {
+  id            String  @id @default(uuid())
+  userId        String
+  destinationId String?
+  tourId        String?
+  hotelId       String?
+  restaurantId  String?
+  eventId       String?
+
+  createdAt DateTime @default(now())
+
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  destination Destination? @relation(fields: [destinationId], references: [id])
+  tour        Tour?        @relation(fields: [tourId], references: [id])
+  hotel       Hotel?       @relation(fields: [hotelId], references: [id])
+  restaurant  Restaurant?  @relation(fields: [restaurantId], references: [id])
+  event       Event?       @relation(fields: [eventId], references: [id])
+
+  @@unique([userId, destinationId])
+  @@unique([userId, tourId])
+  @@unique([userId, hotelId])
+  @@unique([userId, restaurantId])
+  @@unique([userId, eventId])
+  @@index([userId])
+  @@map("favorites")
+}
+
+// ─── BlogPost ────────────────────────────────────────────────────────────────
+
+model BlogPost {
+  id         String  @id @default(uuid())
+  title      String
+  slug       String  @unique
+  content    String
+  excerpt    String?
+  coverImage String?
+  published  Boolean @default(false)
+  authorId   String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  author User    @relation(fields: [authorId], references: [id])
+  images Image[]
+
+  @@index([slug])
+  @@index([authorId])
+  @@index([createdAt])
+  @@map("blog_posts")
+}
+
+// ─── Image ───────────────────────────────────────────────────────────────────
+
+model Image {
+  id            String  @id @default(uuid())
+  url           String
+  alt           String?
+  destinationId String?
+  tourId        String?
+  hotelId       String?
+  restaurantId  String?
+  eventId       String?
+  blogPostId    String?
+
+  createdAt DateTime @default(now())
+
+  destination Destination? @relation(fields: [destinationId], references: [id])
+  tour        Tour?        @relation(fields: [tourId], references: [id])
+  hotel       Hotel?       @relation(fields: [hotelId], references: [id])
+  restaurant  Restaurant?  @relation(fields: [restaurantId], references: [id])
+  event       Event?       @relation(fields: [eventId], references: [id])
+  blogPost    BlogPost?    @relation(fields: [blogPostId], references: [id])
+
+  @@map("images")
+}
