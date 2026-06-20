@@ -1,21 +1,24 @@
 import Link from 'next/link';
 import { MapPin, Map, Building2, Utensils, CalendarDays, BookOpen } from 'lucide-react';
+import { getCounts } from '@/lib/cached-queries';
 
-const CATEGORIES = [
-  { label: 'Destinations', desc: '50+ places',        icon: MapPin,        href: '/destinations', bg: 'bg-blue-50',   text: 'text-blue-600'   },
-  { label: 'Tours',        desc: '30+ guided tours',  icon: Map,           href: '/tours',        bg: 'bg-green-50',  text: 'text-green-600'  },
-  { label: 'Hotels',       desc: '200+ hotels',       icon: Building2,     href: '/hotels',       bg: 'bg-violet-50', text: 'text-violet-600' },
-  { label: 'Restaurants',  desc: '150+ restaurants',  icon: Utensils,      href: '/restaurants',  bg: 'bg-orange-50', text: 'text-orange-600' },
-  { label: 'Events',       desc: '100+ per year',     icon: CalendarDays,  href: '/events',       bg: 'bg-rose-50',   text: 'text-rose-600'   },
-  { label: 'Blog',         desc: 'Travel guides',     icon: BookOpen,      href: '/blog',         bg: 'bg-teal-50',   text: 'text-teal-600'   },
-];
+export default async function CategorySection() {
+  const counts = await getCounts();
 
-export default function CategorySection() {
+  const CATEGORIES = [
+    { label: 'Destinations', desc: `${counts.destinations} places`,      icon: MapPin,        href: '/destinations', bg: 'bg-blue-50',   text: 'text-blue-600'   },
+    { label: 'Tours',        desc: `${counts.tours} guided tours`,        icon: Map,           href: '/tours',        bg: 'bg-green-50',  text: 'text-green-600'  },
+    { label: 'Hotels',       desc: `${counts.hotels} hotels`,             icon: Building2,     href: '/hotels',       bg: 'bg-violet-50', text: 'text-violet-600' },
+    { label: 'Restaurants',  desc: `${counts.restaurants} restaurants`,   icon: Utensils,      href: '/restaurants',  bg: 'bg-orange-50', text: 'text-orange-600' },
+    { label: 'Events',       desc: `${counts.events} events`,             icon: CalendarDays,  href: '/events',       bg: 'bg-rose-50',   text: 'text-rose-600'   },
+    { label: 'Blog',         desc: `${counts.blogs} articles`,            icon: BookOpen,      href: '/blog',         bg: 'bg-teal-50',   text: 'text-teal-600'   },
+  ];
+
   return (
     <section className="py-8 sm:py-10 bg-background border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-lg sm:text-xl font-bold text-text mb-4 sm:mb-6">Browse by category</h2>
-        <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3">
+        <div className="grid grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3">
           {CATEGORIES.map((cat) => (
             <Link
               key={cat.label}

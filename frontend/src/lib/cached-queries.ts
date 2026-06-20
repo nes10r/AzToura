@@ -29,6 +29,22 @@ export const getFeaturedTours = unstable_cache(
   { revalidate: 120, tags: ['tours'] }
 );
 
+export const getCounts = unstable_cache(
+  async () => {
+    const [destinations, tours, hotels, restaurants, events, blogs] = await Promise.all([
+      prisma.destination.count(),
+      prisma.tour.count(),
+      prisma.hotel.count(),
+      prisma.restaurant.count(),
+      prisma.event.count(),
+      prisma.blogPost.count(),
+    ]);
+    return { destinations, tours, hotels, restaurants, events, blogs };
+  },
+  ['site-counts'],
+  { revalidate: 300, tags: ['counts'] }
+);
+
 export const getCategories = unstable_cache(
   () => prisma.category.findMany({
     include: { _count: { select: { destinations: true, tours: true } } },
