@@ -19,10 +19,10 @@ const footerLinks = {
 export default function Footer() {
   return (
     <footer className="bg-text text-white/80">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-10">
           {/* Brand */}
-          <div className="lg:col-span-2 space-y-4">
+          <div className="col-span-2 lg:col-span-2 space-y-4">
             <Link href="/" className="flex items-center gap-2">
               <div className="w-9 h-9 bg-primary rounded-lg flex items-center justify-center">
                 <Globe className="w-5 h-5 text-white" />
@@ -68,7 +68,7 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
           <p className="text-xs text-white/40">
             © {new Date().getFullYear()} {SITE_NAME}. All rights reserved.
           </p>
