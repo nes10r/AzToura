@@ -2,7 +2,13 @@ import { NextRequest } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { ok, err, parsePagination, paginate, requireAuth, requireAdmin } from '@/lib/api-helpers';
 
-const include = { tour: true, user: { select: { id: true, name: true, email: true } } };
+const include = {
+  user:       { select: { id: true, name: true, email: true } },
+  tour:       { select: { id: true, name: true } },
+  hotel:      { select: { id: true, name: true } },
+  restaurant: { select: { id: true, name: true } },
+  event:      { select: { id: true, name: true } },
+};
 
 export async function GET(req: NextRequest) {
   const { user, response } = requireAuth(req);
