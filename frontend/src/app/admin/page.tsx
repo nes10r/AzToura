@@ -38,6 +38,9 @@ const PIE_DATA = [
   { name: 'Events', value: 20, color: '#F6B73C' },
 ];
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const revenueFormatter = (v: any) => [`$${v}`, 'Revenue'] as [string, string];
+
 const STATUS_COLORS: Record<string, string> = {
   PENDING: 'bg-amber-100 text-amber-700',
   CONFIRMED: 'bg-emerald-100 text-emerald-700',
@@ -155,7 +158,10 @@ export default function AdminDashboard() {
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
             <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#94a3b8' }} />
             <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#94a3b8' }} tickFormatter={v => `$${v}`} />
-            <Tooltip formatter={(v: unknown) => [`$${v}`, 'Revenue'] as [string, string]} contentStyle={{ borderRadius: 8, border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} />
+            <Tooltip
+              contentStyle={{ borderRadius: 8, border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+              formatter={revenueFormatter}
+            />
             <Line type="monotone" dataKey="revenue" stroke="#0A8F6A" strokeWidth={2.5} dot={{ fill: '#0A8F6A', r: 4 }} />
           </LineChart>
         </ResponsiveContainer>
