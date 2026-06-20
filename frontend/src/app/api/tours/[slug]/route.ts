@@ -32,7 +32,7 @@ async function updateTour(req: NextRequest, { params }: { params: Promise<{ slug
   try {
     const { slug } = await params;
     const body = await req.json();
-    const { id: _id, createdAt: _ca, updatedAt: _ua, destination: _d, category: _cat, images: _img, additionalDestinations: _ad, reviews: _r, _count: _c, ...data } = body;
+    const { id: _id, createdAt: _ca, updatedAt: _ua, destination: _d, category: _cat, images: _img, additionalDestinations: _ad, additionalDestinationIds: _adi, reviews: _r, _count: _c, ...data } = body;
     const tour = await prisma.tour.update({ where: { id: slug }, data, include });
     return ok(tour, 'Tour updated');
   } catch (e) { console.error(e); return err('Server error', 500); }

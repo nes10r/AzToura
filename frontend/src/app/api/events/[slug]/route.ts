@@ -22,7 +22,7 @@ async function updateEvent(req: NextRequest, { params }: { params: Promise<{ slu
   try {
     const { slug } = await params;
     const body = await req.json();
-    const { id: _id, createdAt: _ca, updatedAt: _ua, destination: _d, ...data } = body;
+    const { id: _id, createdAt: _ca, updatedAt: _ua, destination: _d, eventType: _et, maxAttendees: _ma, ...data } = body;
     const event = await prisma.event.update({ where: { id: slug }, data, include: { destination: true } });
     return ok(event, 'Event updated');
   } catch (e) { console.error(e); return err('Server error', 500); }

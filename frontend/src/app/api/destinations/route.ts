@@ -40,7 +40,8 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const existing = await prisma.destination.findUnique({ where: { slug: body.slug } });
     if (existing) return err('Slug already in use', 409);
-    const destination = await prisma.destination.create({ data: body, include });
+    const { seoTitle: _st, seoDescription: _sd, ...data } = body;
+    const destination = await prisma.destination.create({ data, include });
     return ok(destination, 'Destination created', 201);
   } catch (e) { console.error(e); return err('Server error', 500); }
 }

@@ -30,8 +30,9 @@ export async function POST(req: NextRequest) {
   if (response) return response;
   try {
     const body = await req.json();
+    const { category: _cat, featured: _f, tags: _t, metaTitle: _mt, metaDescription: _md, ...data } = body;
     const post = await prisma.blogPost.create({
-      data: { ...body, authorId: user!.id },
+      data: { ...data, authorId: user!.id },
       include: { author: { select: { id: true, name: true, avatar: true } } },
     });
     return ok(post, 'Blog post created', 201);

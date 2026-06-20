@@ -31,7 +31,8 @@ export async function POST(req: NextRequest) {
   if (response) return response;
   try {
     const body = await req.json();
-    const event = await prisma.event.create({ data: body, include: { destination: true } });
+    const { eventType: _et, maxAttendees: _ma, ...data } = body;
+    const event = await prisma.event.create({ data, include: { destination: true } });
     return ok(event, 'Event created', 201);
   } catch (e) { console.error(e); return err('Server error', 500); }
 }

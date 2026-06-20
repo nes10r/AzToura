@@ -41,7 +41,7 @@ async function updateDestination(req: NextRequest, { params }: { params: Promise
   try {
     const { slug } = await params;
     const body = await req.json();
-    const { id: _id, createdAt: _ca, updatedAt: _ua, category: _cat, images: _img, _count: _c, ...data } = body;
+    const { id: _id, createdAt: _ca, updatedAt: _ua, category: _cat, images: _img, _count: _c, seoTitle: _st, seoDescription: _sd, ...data } = body;
     const destination = await prisma.destination.update({ where: { id: slug }, data, include });
     return ok(destination, 'Destination updated');
   } catch (e) { console.error(e); return err('Server error', 500); }

@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const existing = await prisma.tour.findUnique({ where: { slug: body.slug } });
     if (existing) return err('Slug already in use', 409);
-    const { additionalDestinations, ...data } = body;
+    const { additionalDestinations: _ad, additionalDestinationIds: _adi, ...data } = body;
     const tour = await prisma.tour.create({ data, include });
     return ok(tour, 'Tour created', 201);
   } catch (e) { console.error(e); return err('Server error', 500); }
