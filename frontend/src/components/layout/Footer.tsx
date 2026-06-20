@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Globe, Mail, Phone, MapPin } from 'lucide-react';
-import { SITE_NAME, NAV_LINKS } from '@/constants';
+import { SITE_NAME, SITE_PHONE, SITE_EMAIL, NAV_LINKS } from '@/constants';
 
 const footerLinks = {
   Discover: NAV_LINKS,
@@ -39,11 +39,11 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-2 text-white/60">
                 <Mail className="w-4 h-4 text-primary shrink-0" />
-                <span>hello@azerbaijantourism.az</span>
+                <span>{SITE_EMAIL}</span>
               </div>
               <div className="flex items-center gap-2 text-white/60">
                 <Phone className="w-4 h-4 text-primary shrink-0" />
-                <span>+994 12 000 0000</span>
+                <a href={`tel:${SITE_PHONE.replace(/\s/g, '')}`} className="hover:text-white transition-colors">{SITE_PHONE}</a>
               </div>
             </div>
           </div>

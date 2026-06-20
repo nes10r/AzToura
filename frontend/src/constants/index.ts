@@ -1,5 +1,7 @@
-export const SITE_NAME = 'Azerbaijan Tourism';
+export const SITE_NAME = 'AzTour';
 export const SITE_DESCRIPTION = 'Discover the beauty of Azerbaijan — destinations, tours, hotels, restaurants, and unforgettable experiences.';
+export const SITE_PHONE = '+994 70 282 82 01';
+export const SITE_EMAIL = 'hello@aztour.az';
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
 export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';

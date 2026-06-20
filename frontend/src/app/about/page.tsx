@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/Button';
 
 export const metadata: Metadata = {
   title: 'About Us',
-  description: 'Learn about Azerbaijan Tourism Platform and our mission to showcase the beauty of Azerbaijan.',
+  description: 'Learn about AzTour and our mission to showcase the beauty of Azerbaijan.',
 };
 
 const values = [
@@ -49,7 +49,7 @@ export default function AboutPage() {
           Connecting the world to Azerbaijan&apos;s wonders
         </h2>
         <p className="text-text-secondary text-lg leading-relaxed">
-          Azerbaijan Tourism Platform is the premier digital destination for discovering, planning, and booking
+          AzTour is the premier digital destination for discovering, planning, and booking
           travel experiences across Azerbaijan. From the ancient city of Baku to the snow-capped peaks of
           Shahdag and the subtropical valleys of Lankaran, we showcase the extraordinary diversity of this
           remarkable country.
@@ -80,7 +80,7 @@ export default function AboutPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-text">Meet the Team</h2>
-          <p className="text-text-secondary mt-2">The people behind Azerbaijan Tourism Platform</p>
+          <p className="text-text-secondary mt-2">The people behind AzTour</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-3xl mx-auto">
           {team.map((member) => (

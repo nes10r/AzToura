@@ -4,11 +4,11 @@ import { useState } from 'react';
 import { Save, Check, Globe } from 'lucide-react';
 
 const PAGES = [
-  { name: 'Home', path: '/', title: 'Azerbaijan Tourism', desc: 'Discover Azerbaijan destinations', keywords: 'azerbaijan, tourism, baku' },
+  { name: 'Home', path: '/', title: 'AzTour', desc: 'Discover Azerbaijan destinations', keywords: 'azerbaijan, tourism, baku, aztour' },
   { name: 'Destinations', path: '/destinations', title: 'Destinations', desc: 'Explore all destinations', keywords: 'destinations, places' },
   { name: 'Tours', path: '/tours', title: 'Tours', desc: 'Guided tour packages', keywords: 'tours, guided' },
   { name: 'Hotels', path: '/hotels', title: 'Hotels', desc: 'Book hotels in Azerbaijan', keywords: 'hotels, accommodation' },
-  { name: 'About', path: '/about', title: 'About Us', desc: 'About Azerbaijan Tourism Platform', keywords: 'about, team' },
+  { name: 'About', path: '/about', title: 'About Us', desc: 'About AzTour', keywords: 'about, team' },
 ];
 
 export default function SEOPage() {
